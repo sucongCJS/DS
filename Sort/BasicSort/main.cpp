@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SortTestHelper.h"
+#include "../SortTestHelper.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ void insertionSort(T arr[], int n){
 }
 
 int main(){
-    int n = 10000;
+    int n = 50000;
     // int* arr = SortTestHelper::generateRandomArray(n, 0, 3);
     int* arr = SortTestHelper::generateNearlyOrderedArray(n, 100);
     int* arr2 = SortTestHelper::copyArray(arr, n);
@@ -39,6 +39,6 @@ int main(){
 
     delete[] arr;
     delete[] arr2;
-
+ 
     return 0;
 }
