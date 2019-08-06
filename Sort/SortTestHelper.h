@@ -33,7 +33,7 @@ namespace SortTestHelper{
             arr[i] = i;
 
         srand(time(NULL));
-        for(int i=0; i<n; i++){
+        for(int i=0; i<swapTime; i++){
             int posx = rand()%n; // [0,n)
             int posy = rand()%n;
             swap(arr[posx], arr[posy]);
