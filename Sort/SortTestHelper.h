@@ -13,10 +13,10 @@ using namespace std;
 
 namespace SortTestHelper{
     // 生成有n个元素的随机数组,每个元素的随机范围为[range_l, range_r]
-    int* generateRandomArray(int n, int range_l, int range_r){
+    int* generateRandomArray(int n, int range_l, int range_r, int seed=time(NULL)){
         assert(range_l <= range_r);
         int* arr = new int[n];
-        srand(time(NULL)); // 随机种子
+        srand(seed); // 随机种子
 
         for(int i=0; i<n; i++)
             arr[i] = rand() % (range_r - range_l + 1) + range_l;
@@ -45,7 +45,16 @@ namespace SortTestHelper{
     // 遍历数组
     template<typename T>
     void printArray(T arr[], int n){
-        for(int i=0 ; i<n ; i++)
+        for(int i=0; i<n; i++)
+            cout<<arr[i]<<" ";
+        cout<<endl;
+        return;
+    }
+
+    // 遍历[l, r]范围的数组
+    template<typename T>
+    void printArray(T arr[], int l, int r){
+        for(int i=l; i<=r; i++)
             cout<<arr[i]<<" ";
         cout<<endl;
         return;
