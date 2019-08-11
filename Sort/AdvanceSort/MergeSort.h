@@ -63,16 +63,16 @@ void mergeSort(T arr[], int n){
 // 自底向上的归并
 template<typename T>
 void mergeSortBU(T arr[], int n){
-    for(int sz = 1; sz <= n; sz += sz){ // sz为一小个有序部分的长度
+    int is = 16; // 使用插入排序的最小单位
+    for(int i = 0; i < n; i += is) // 应该比 min里面 i 加的数应该大一位, 因为这是下一个部分的第一个
+        insertionSort(arr, i, min(i + is - 1, n-1)); 
+
+    for(int sz = is; sz < n; sz += sz){ // sz为一小个有序部分的长度, sz只要小于n就好了, 不用等于, 等于的时候已经没有第二个子数组了, sz从第is个开始, is个已经是有序的了
         for(int i = 0; i + sz < n; i += sz + sz) // 第二部分的 i+sz 必须小于 n, 第二部分才至少有一个值, 归并才有意义
-            // 如果少于20个排序, 用插入
-            if(sz <= 13)
-                insertionSort(arr, i, i + sz + sz-1);
             // 对 arr[i...i+sz-1] 和 arr[i+sz...i+sz+sz-1] 进行归并
-            else
-                // 已经有序就跳过!
-                if(arr[i + sz -1] > arr[i + sz])
-                    __merge(arr, i, i + sz - 1, min(i + sz + sz - 1, n - 1)); // 剩下的不足sz个, 直接最后一个
+            // 已经有序就跳过!
+            if(arr[i + sz - 1] > arr[i + sz])
+                __merge(arr, i, i + sz - 1, min(i + sz + sz - 1, n - 1)); // 剩下的不足sz个, 直接最后一个
     }
 }
 
