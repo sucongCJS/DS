@@ -16,20 +16,16 @@ void __merge(T arr[], int l, int mid, int r){
         aux[i-l] = arr[i];
 
     // 合并
-    int i=l, j=mid+1;
+    int i=0, j=mid-l+1; // 辅助数组上的
     for(int k=l; k<=r; k++){
-        if(i > mid){
-            arr[k] = aux[j-l]; j++;
-        }
-        else if(j > r){
-            arr[k] = aux[i-l]; i++;
-        }
-        else if(aux[i-l] < aux[j-l]){
-            arr[k] = aux[i-l]; i++;
-        }
-        else{
-            arr[k] = aux[j-l]; j++;
-        }
+        if(i > mid-l)
+            arr[k] = aux[j++];
+        else if(j > r-l)
+            arr[k] = aux[i++];
+        else if(aux[i] < aux[j]) // 等于的时候也不交换, 以保证稳定性
+            arr[k] = aux[i++];
+        else
+            arr[k] = aux[j];
     }
 
     delete[] aux;
