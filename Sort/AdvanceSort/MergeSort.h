@@ -25,7 +25,7 @@ void __merge(T arr[], int l, int mid, int r){
         else if(aux[i] < aux[j]) // 等于的时候也不交换, 以保证稳定性
             arr[k] = aux[i++];
         else
-            arr[k] = aux[j];
+            arr[k] = aux[j++];
     }
 
     delete[] aux;
