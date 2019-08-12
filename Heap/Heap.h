@@ -245,7 +245,7 @@ public:
         i++;
         data[i] = item; // 不能在相同索引的位置前后insert两次item的
         indexes[count+1] = i; // 索引列加上一位, 为新插入的
-        reverse[i] = [count+1];
+        reverse[i] = count+1;
 
         count++;
         shiftUp(count);
@@ -310,6 +310,6 @@ public:
         shiftUp(j);
         return;
     }
-}
+};
 
 #endif
