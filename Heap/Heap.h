@@ -176,4 +176,140 @@ private:
     }
 };
 
+template<typename Item>
+class IndexMaxHeap{
+    private: // 不能之间修改
+    Item* data;
+    int* indexes; // 堆
+    int* reverse; // 索引
+    // 通过堆可以很容易找到data, 通过data的顺序的那个索引值却不好找在堆中的位置, 所以要reverse来存储顺序的那个索引在堆中的位置, 以反向查找
+    int count;
+    int capacity;
+
+    void shiftUp(int k){
+        // 比较的是data, 变化的是index
+        while(data[indexes[k]] > data[indexes[k/2]] && k > 1){ // 先获取存储的索引, 
+            swap(indexes[k], indexes[k/2]);
+            reverse[indexes[k]] = k; // indexes[k]的是顺序的索引, 要能通过顺序的索引找到它在堆中的位置
+            reverse[indexes[k/2]] = k/2;
+            k /= 2;
+        }
+    }
+
+    void shiftDown(int k){
+        while(k*2 <= count){
+            int j = k*2; // data[j] 在最后是要和 data[k] 交换的
+            if(j+1 <= count && data[indexes[j+1]] > data[indexes[j]])
+                j++;
+            if(data[indexes[k]] >= data[indexes[j]])
+                break;
+            swap(indexes[k], indexes[j]);
+            reverse[indexes[k]] = k;
+            reverse[indexes[j]] = j;
+
+            k = j;
+        }
+    }
+
+public:
+    IndexMaxHeap(int capacity){
+        data = new Item[capacity + 1];
+        indexes = new int[capacity + 1]; // 索引为0不存
+        reverse = new int[capacity + 1];
+        for(int i=0; i<=capacity; i++){
+            reverse[i] = 0; // 索引如果不存在设为0
+        }
+        count = 0; // this 可以省略
+        this->capacity = capacity;
+    }
+
+    ~IndexMaxHeap(){
+        delete[] data;
+        delete[] indexes;
+        delete[] reverse;
+    }
+
+    int size(){
+        return count;
+    }
+
+    bool isEmpty(){
+        return count == 0;
+    }
+
+    // i从0开始 O(logn)
+    void insert(int i, Item item){
+        assert(count + 1 <= capacity); //??分配新的空间
+        assert(i+1 >= 1 && i + 1 <= capacity);
+
+        i++;
+        data[i] = item; // 不能在相同索引的位置前后insert两次item的
+        indexes[count+1] = i; // 索引列加上一位, 为新插入的
+        reverse[i] = [count+1];
+
+        count++;
+        shiftUp(count);
+    }
+
+    // O(logn)
+    Item extracMax(){
+        assert(count > 0);
+
+        Item ret = data[indexes[1]];
+        swap(indexes[count], indexes[1]);
+        reverse[indexes[1]] = 1;
+        reverse[indexes[count]] = 0; // 将最后一个删除
+
+        count--;
+        shiftDown(1);
+
+        return ret;
+    }
+
+    int extracMaxIndex(){
+        assert(count > 0);
+
+        int ret = indexes[1]-1;
+        swap(indexes[count], indexes[1]);
+        reverse[indexes[1]] = 1;
+        reverse[indexes[count]] = 0; // 将最后一个删除
+
+        count--;
+        shiftDown(1);
+
+        return ret;
+    }
+
+    bool contain(int i){
+        assert(i+1 >= 1 && i+1 <= capacity);
+        return reverse[i+1] != 0;
+    }
+
+    Item getItem(int i){
+        assert(contain(i));
+        return data[i+1];
+    }
+
+    // O(n+logn) = O(n)
+    void change(int i, Item newItem){
+        assert(contain(i));
+        i++;
+        data[i] = newItem;
+
+        // 找到indexes[j] = i, j表示data[i]在堆中的位置
+        // 然后做一次shiftDown(j), 一次shiftUp(j)
+        // for(int j=1; j<count; j++){
+        //     if(indexes[j] == i){
+        //         shiftDown(j);
+        //         shiftUp(j);
+        //         return;
+        //     }
+        // }
+        int j = reverse[i];
+        shiftDown(j);
+        shiftUp(j);
+        return;
+    }
+}
+
 #endif
