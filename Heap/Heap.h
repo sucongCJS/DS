@@ -12,7 +12,7 @@ using namespace std;
 
 template<typename Item>
 class MaxHeap{
-private: // 不能之间修改
+private: // 不能直接修改
     Item* data;
     int count;
     int capacity;
