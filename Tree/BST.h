@@ -1,6 +1,9 @@
 // 二分搜索树的局限性:
 // 如果是顺序插入的话, 二分搜索书退化成了链表, O(n)
 // 解决方法: 红黑树, Splay 树, VAL树, 2-3树
+#ifndef BINARYSEARCHTREE_BST_H
+#define BINARYSEARCHTREE_BST_H
+
 #include <iostream>
 #include <queue>
 #include <cassert>
@@ -271,3 +274,5 @@ private:
         } 
     }
 };
+
+#endif
